@@ -35,12 +35,16 @@ class RestOperation {
 
   /// Constant for the `GET` HTTP method.
   static const RestOperation get = RestOperation(method: 'get');
+
   /// Constant for the `POST` HTTP method.
   static const RestOperation post = RestOperation(method: 'post');
+
   /// Constant for the `PUT` HTTP method.
   static const RestOperation put = RestOperation(method: 'put');
+
   /// Constant for the `PATCH` HTTP method.
   static const RestOperation patch = RestOperation(method: 'patch');
+
   /// Constant for the `DELETE` HTTP method.
   static const RestOperation delete = RestOperation(method: 'delete');
 
@@ -50,7 +54,7 @@ class RestOperation {
   /// The URI of the REST API.
   final String? uri;
 
-  /// The 
+  /// The
   final String? operationId;
 
   /// A description of the REST API.
