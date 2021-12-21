@@ -1,5 +1,6 @@
 import '../serialization/serializable.dart';
 
+/// Swagger reference information.
 class Reference extends Serializable {
   Reference(String ref) {
     this.ref = ref;

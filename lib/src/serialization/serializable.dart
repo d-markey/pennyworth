@@ -56,6 +56,7 @@ extension _MapSerialization on Map<String, dynamic> {
           (p) => MapEntry<String, dynamic>(p.key, _serialize(p.value, mode))));
 }
 
+/// Base class for serializable data structures.
 abstract class Serializable {
   final _map = <String, dynamic>{};
 
@@ -87,9 +88,11 @@ abstract class Serializable {
 
   Map<String, dynamic> serialize(Mode mode) => _serialize(_map, mode);
 
+  /// JSON serialization
   String toJson() =>
       JsonSerializer(indent: '   ').serialize(serialize(Mode.json));
 
+  /// YAML serialization
   String toYaml() =>
       YamlSerializer(indent: '  ').serialize(serialize(Mode.yaml));
 }

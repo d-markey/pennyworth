@@ -2,6 +2,7 @@ import 'external_docs.dart';
 import 'reference.dart';
 import 'schema.dart';
 
+/// OpenAPI v3 property information.
 class Property extends Schema {
   Property(this.name, String type,
       {String? format,

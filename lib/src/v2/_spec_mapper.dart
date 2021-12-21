@@ -5,6 +5,7 @@ import 'property.dart';
 import 'schema.dart';
 import 'security_definition.dart';
 
+/// Class mapping version-agnostic specifications to OpenAPI v2 (Swagger) information.
 class SpecMapper {
   static Schema buildSchema(
       base.TypeSpecification spec, OpenApiService openApiService,

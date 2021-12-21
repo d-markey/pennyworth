@@ -1,5 +1,6 @@
 import '../serialization/serializable.dart';
 
+/// OpenAPI v3 reference information.
 class Reference<T> extends Serializable {
   Reference(String ref, this.component) {
     this.ref = ref;

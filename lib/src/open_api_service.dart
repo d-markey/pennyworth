@@ -7,10 +7,18 @@ import 'opened_api.dart';
 
 typedef AlfredMiddleware = FutureOr Function(HttpRequest req, HttpResponse res);
 
+/// Base class for OpenAPI service.
+/// See implementation in v2 (OpenAPI Standard v2 aka Swagger) and v3 (OpenAPI Standard v3).
 abstract class OpenApiService {
+  /// API documentation
   ApiSpecification get documentation;
 
+  /// Registers OpenAPI service specifications.
   void mount(OpenedApi api);
+
+  /// Sets REST API server.
   void addServer(HttpServer server);
+
+  /// Registers OpenAPI type specifications.
   TypeSpecification registerTypeSpecification<T>(TypeSpecification spec);
 }

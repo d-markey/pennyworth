@@ -2,6 +2,7 @@ import '../serialization/serializable.dart';
 
 import 'external_docs.dart';
 
+/// Swagger tag.
 class Tag extends Serializable {
   Tag(String name, {String? description, ExternalDocs? externalDocs}) {
     this.name = name;

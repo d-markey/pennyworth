@@ -5,6 +5,7 @@ import 'external_docs.dart';
 import 'property.dart';
 import 'reference.dart';
 
+/// Swagger schema information.
 class Schema extends Serializable {
   Schema(String type,
       {String? format,

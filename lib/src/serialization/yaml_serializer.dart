@@ -1,13 +1,16 @@
 import 'serializable.dart';
 
+/// YAML serializer.
 class YamlSerializer {
   YamlSerializer({String? indent}) : _indent = indent ?? '  ';
 
   final String _indent;
 
+  /// Serialization of a scalar value.
   String _serializeScalar(dynamic value) =>
       (value is bool) ? (value ? 'true' : 'false') : value.toString();
 
+  /// Serialization of a list.
   Iterable<String> _serializeList(List<dynamic> list) sync* {
     final firstIndent = '-' + _indent.substring(1);
     for (var value in list) {
@@ -28,6 +31,7 @@ class YamlSerializer {
     }
   }
 
+  /// Serialization of a map.
   Iterable<String> _serializeMap(Map<String, dynamic> map) sync* {
     for (var entry in map.entries) {
       if (isScalar(entry.value)) {
@@ -46,6 +50,7 @@ class YamlSerializer {
     }
   }
 
+  /// Serialization of a data structure (scalar, list or map).
   Iterable<String> _serialize(dynamic data) sync* {
     if (isScalar(data)) {
       yield _serializeScalar(data);
@@ -60,5 +65,6 @@ class YamlSerializer {
     }
   }
 
+  /// Serialization implementation.
   String serialize(Map<String, dynamic> map) => _serialize(map).join('\n');
 }

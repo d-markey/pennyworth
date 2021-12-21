@@ -1,6 +1,7 @@
 import '../serialization/serializable.dart';
 import 'variable.dart';
 
+/// OpenAPI v3 server information.
 class Server extends Serializable {
   Server(String url, {String? description}) {
     this.url = url;

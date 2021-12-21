@@ -2,6 +2,7 @@ import '../serialization/serializable.dart';
 
 import '_helpers.dart';
 
+/// Swagger security definition information.
 class SecurityDefinition extends Serializable {
   SecurityDefinition._(this.name);
 

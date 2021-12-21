@@ -2,6 +2,7 @@ import 'external_docs.dart';
 import 'reference.dart';
 import 'schema.dart';
 
+/// Swagger property information.
 class Property extends Schema {
   Property(this.name, String type,
       {String? format,

@@ -23,6 +23,7 @@ import 'security_scheme.dart';
 import 'server.dart';
 import 'tag.dart';
 
+/// Service class for OpenAPI Standard v3.
 class OpenApiService implements base.OpenApiService {
   OpenApiService(String title, String version, this._securityResolver) {
     _doc = OpenApiDocument(Info(title, version: version));

@@ -3,6 +3,7 @@ import '../serialization/serializable.dart';
 import '_helpers.dart';
 import 'schema.dart';
 
+/// OpenAPI v3 parameter information.
 class Parameter extends Serializable {
   Parameter(String name, String location,
       {String? description,

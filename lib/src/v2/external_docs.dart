@@ -1,5 +1,6 @@
 import '../serialization/serializable.dart';
 
+/// Swagger external documentation information.
 class ExternalDocs extends Serializable {
   ExternalDocs(String url, {String? description}) {
     this.url = url;

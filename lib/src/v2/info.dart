@@ -3,6 +3,7 @@ import '../serialization/serializable.dart';
 import 'contact.dart';
 import 'license.dart';
 
+/// Swagger information.
 class Info extends Serializable {
   Info(String title,
       {required String version,

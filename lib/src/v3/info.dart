@@ -3,6 +3,7 @@ import '../serialization/serializable.dart';
 import 'contact.dart';
 import 'license.dart';
 
+/// OpenAPI v3 information.
 class Info extends Serializable {
   Info(String title,
       {required String version,

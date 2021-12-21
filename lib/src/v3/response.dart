@@ -1,6 +1,7 @@
 import '../serialization/serializable.dart';
 import 'media_type.dart';
 
+/// OpenAPI v3 response information.
 class Response extends Serializable {
   Response({String? description}) {
     if (description != null) this.description = description;

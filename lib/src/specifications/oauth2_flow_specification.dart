@@ -1,3 +1,4 @@
+/// Base class for OpenAPI OAuth2 flow specifications (version agnostic).
 class OAuth2FlowSpecification {
   OAuth2FlowSpecification(
       {this.authorizationUrl, this.tokenUrl, this.refreshUrl});

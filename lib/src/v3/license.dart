@@ -1,5 +1,6 @@
 import '../serialization/serializable.dart';
 
+/// OpenAPI v3 license information.
 class License extends Serializable {
   License(String name, {String? url}) {
     this.name = name;

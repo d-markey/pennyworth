@@ -18,6 +18,7 @@ import 'schema.dart';
 import 'security_definition.dart';
 import 'tag.dart';
 
+/// Service class for OpenAPI Standard v2 (aka Swagger).
 class OpenApiService implements base.OpenApiService {
   OpenApiService(String title, String version, this._securityResolver) {
     _doc = OpenApiDocument(Info(title, version: version));
@@ -46,11 +47,6 @@ class OpenApiService implements base.OpenApiService {
     _doc.basePath = '/';
     _doc.addScheme('http');
   }
-
-  // void registerSchema<T>(Schema schema, [Type? type]) {
-  //   type ??= T;
-  //   _doc.addSchema(type.toString(), schema);
-  // }
 
   @override
   TypeSpecification registerTypeSpecification<T>(TypeSpecification spec) {

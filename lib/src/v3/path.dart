@@ -5,6 +5,7 @@ import 'operation.dart';
 import 'parameter.dart';
 import 'server.dart';
 
+/// OpenAPI v3 path information.
 class Path extends Serializable {
   Path(this.path, {String? summary, String? description}) {
     assert(path.startsWith('/'));

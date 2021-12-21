@@ -4,6 +4,7 @@ import '_helpers.dart';
 import 'operation.dart';
 import 'parameter.dart';
 
+/// Swagger path information.
 class Path extends Serializable {
   Path(this.path, {String? summary, String? description}) {
     assert(path.startsWith('/'));

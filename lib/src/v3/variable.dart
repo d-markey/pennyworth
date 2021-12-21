@@ -1,5 +1,6 @@
 import '../serialization/serializable.dart';
 
+/// OpenAPI v3 variable information.
 class Variable extends Serializable {
   Variable(this.name, {required dynamic defaultValue, String? description}) {
     if (defaultValue != null) this.defaultValue = defaultValue;

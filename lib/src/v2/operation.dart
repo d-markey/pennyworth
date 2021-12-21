@@ -5,6 +5,7 @@ import 'response.dart';
 import 'security_definition.dart';
 import 'tag.dart';
 
+/// Swagger operation information.
 class Operation extends Serializable {
   Operation(
       {String? summary,

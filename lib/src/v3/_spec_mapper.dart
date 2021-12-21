@@ -10,6 +10,7 @@ import 'property.dart';
 import 'schema.dart';
 import 'security_scheme.dart';
 
+/// Class mapping version-agnostic specifications to OpenAPI v3 information.
 class SpecMapper {
   static Schema buildSchema(
       base.TypeSpecification spec, OpenApiService openApiService,

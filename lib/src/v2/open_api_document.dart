@@ -12,6 +12,7 @@ import 'schema.dart';
 import 'security_definition.dart';
 import 'tag.dart';
 
+/// Swagger document.
 class OpenApiDocument extends Serializable implements base.ApiSpecification {
   OpenApiDocument(Info info, {ExternalDocs? externalDocs}) {
     version = '2.0.0';

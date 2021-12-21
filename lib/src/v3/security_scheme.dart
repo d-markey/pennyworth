@@ -3,6 +3,7 @@ import '../serialization/serializable.dart';
 import '_helpers.dart';
 import 'flows.dart';
 
+/// OpenAPI v3 security scheme information.
 class SecurityScheme extends Serializable {
   SecurityScheme._(this.name);
 

@@ -5,6 +5,7 @@ import 'response.dart';
 import 'security_scheme.dart';
 import 'tag.dart';
 
+/// OpenAPI v3 operation information.
 class Operation extends Serializable {
   Operation(
       {String? summary,

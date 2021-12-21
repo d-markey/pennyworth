@@ -10,6 +10,7 @@ import 'path.dart';
 import 'server.dart';
 import 'tag.dart';
 
+/// OpenAPI v3 document.
 class OpenApiDocument extends Serializable implements base.ApiSpecification {
   OpenApiDocument(Info info, {ExternalDocs? externalDocs}) {
     version = '3.0.0';

@@ -2,6 +2,7 @@ import '../serialization/serializable.dart';
 
 import 'flow.dart';
 
+/// OpenAPI v3 security flows information.
 class Flows extends Serializable {
   Flows(
       {Flow? implicit,
@@ -16,9 +17,16 @@ class Flows extends Serializable {
     if (authorizationCode != null) this.authorizationCode = authorizationCode;
   }
 
+  /// Implicit flow.
   set implicit(Flow value) => setProp('implicit', value);
+
+  /// Password flow.
   set password(Flow value) => setProp('password', value);
+
+  /// Client credential flow.
   set clientCredentials(Flow value) => setProp('clientCredentials', value);
+
+  /// Authorization flow.
   set authorizationCode(Flow value) => setProp('authorizationCode', value);
 
   Flow? getImplicit() => getProp('implicit') as Flow?;

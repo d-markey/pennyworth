@@ -2,6 +2,7 @@ import '../serialization/serializable.dart';
 
 import 'media_type.dart';
 
+/// OpenAPI v3 request body information.
 class RequestBody extends Serializable {
   RequestBody({String? description, bool? required}) {
     if (description != null) this.description = description;
