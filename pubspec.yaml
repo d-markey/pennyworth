@@ -1,0 +1,19 @@
+name: pennyworth
+description: Alfred service & OpenApi documentation generator
+version: 1.0.0
+publish_to: none
+
+environment:
+  sdk: '>=2.15.0 <3.0.0'
+
+
+dependencies:
+  alfred: ^0.1.5
+  async: ^2.8.2
+  build: ^2.1.1
+  source_gen: ^1.1.1
+  analyzer: ^2.7.0
+
+dev_dependencies:
+  lints: ^1.0.0
+  test: ^1.16.0
