@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:alfred/alfred.dart';
 import 'package:pennyworth/pennyworth.dart' as base;
 
+import '../open_api_service.dart';
 import '../specifications/image.dart';
 import '../specifications/security_specification.dart';
 import '../specifications/type_specification.dart';
@@ -25,7 +26,7 @@ import 'tag.dart';
 
 /// Service class for OpenAPI Standard v3.
 class OpenApiService implements base.OpenApiService {
-  OpenApiService(String title, String version, this._securityResolver) {
+  OpenApiService(String title, String version, [this._securityResolver]) {
     _doc = OpenApiDocument(Info(title, version: version));
     registerTypeSpecification<Image>(
         TypeSpecification.string(title: 'Image', format: 'binary'));
@@ -35,15 +36,14 @@ class OpenApiService implements base.OpenApiService {
   OpenApiDocument get documentation => _generate();
 
   late final OpenApiDocument _doc;
-  final SecuritySpecification? Function(OpenApiDocument, base.AlfredMiddleware)
-      _securityResolver;
+  final SecurityResolver? _securityResolver;
 
   final _documentedRoutes = <base.OpenApiRoute>[];
   final _routes = <base.OpenApiRoute>[];
 
   @override
-  void mount(base.OpenedApi api) {
-    _routes.addAll(api.mount(this));
+  void mount(List<base.OpenApi> api) {
+    _routes.addAll(api.expand((item) => item.mount(this)));
   }
 
   @override
@@ -92,6 +92,7 @@ class OpenApiService implements base.OpenApiService {
 
   OpenApiDocument _generate() {
     _doc.components.generate();
+    final securityResolver = _securityResolver;
     while (_routes.isNotEmpty) {
       final route = _routes.removeAt(0);
       _documentedRoutes.add(route);
@@ -101,7 +102,9 @@ class OpenApiService implements base.OpenApiService {
         final path = _getPath(route);
         final operation = _getOperation(route);
         for (var middleware in route.middleware) {
-          final securitySpec = _securityResolver(_doc, middleware);
+          final securitySpec = (securityResolver == null)
+              ? null
+              : securityResolver(_doc, middleware);
           if (securitySpec != null) {
             SecurityScheme? securityScheme =
                 _doc.components.findSecurityScheme(securitySpec.name);

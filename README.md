@@ -83,11 +83,11 @@ class User {
 }
 ```
 
-2. <a name="manual-services"></a>The REST Service deriving from Pennyworth's `NestedOpenedApi` and implementing the service methods. The `mount()` method must be overriden in order to bind the service methods with Alfred routes (documenting APIs at the same time), and to document the JSON message structures. This method will be called from the main program upon startup.
+2. <a name="manual-services"></a>The REST Service deriving from Pennyworth's `NestedOpenApi` and implementing the service methods. The `mount()` method must be overriden in order to bind the service methods with Alfred routes (documenting APIs at the same time), and to document the JSON message structures. This method will be called from the main program upon startup.
 
 ```dart
 // a service operating on to-do items
-class ToDoService extends NestedOpenedApi {
+class ToDoService extends NestedOpenApi {
 
   // in-memory repository for this demo
   final Map<String, ToDoItem> _repo = <String, ToDoItem>{};
@@ -177,17 +177,17 @@ class ToDoService extends NestedOpenedApi {
 }
 
 // a service operating on users
-class UserService extends NestedOpenedApi {
+class UserService extends NestedOpenApi {
   // ...
   // you get the idea
   // ...
 }    
 ```
 
-3. <a name="manual-version"></a>The service container deriving from Pennyworth's `OpenedApiMountPoint`, used for versionning.
+3. <a name="manual-version"></a>The service container deriving from Pennyworth's `OpenApiMountPoint`, used for versionning.
 
 ```dart
-class Version1 extends OpenedApiMountPoint {
+class Version1 extends OpenApiMountPoint {
   Version1(NestedRoute parent)
       : mountPoint = parent.route('/v1'),   // services will be exposed on the "/v1" segment
         super([
@@ -354,7 +354,7 @@ class User {
 ```dart
 // a service operating on to-do items
 @RestService('/todo')
-class ToDoService extends NestedOpenedApi {
+class ToDoService extends NestedOpenApi {
 
   // in-memory repository for this demo
   final Map<String, ToDoItem> _repo = <String, ToDoItem>{};
@@ -399,7 +399,7 @@ class ToDoService extends NestedOpenedApi {
 
 // a service operating on users
 @RestService('/user')
-class UserService extends NestedOpenedApi {
+class UserService extends NestedOpenApi {
   // ...
   // you get the idea
   // ...
@@ -409,7 +409,7 @@ class UserService extends NestedOpenedApi {
 3. <a name="codegen-version"></a>The service container does not change.
 
 ```dart
-class Version1 extends OpenedApiMountPoint {
+class Version1 extends OpenApiMountPoint {
   Version1(NestedRoute parent)
       : mountPoint = parent.route('/v1'),   // services will be exposed on the "/v1" segment
         super([
@@ -522,7 +522,7 @@ Enforcing the middleware via Pennyworth annotations comes down to passing the ty
 ```dart
 @RestService('/todo')
 @RestService.middleware([ [ ApiKeyMiddleware ] ]) // will be enforced for all APIs exposed by this service
-class ToDoService extends NestedOpenedApi {
+class ToDoService extends NestedOpenApi {
   // ...
 }
 ```
@@ -532,7 +532,7 @@ class ToDoService extends NestedOpenedApi {
 ```dart
 @RestService('/user')
 @RestService.middleware([ [ ApiKeyMiddleware ] ]) // will be enforced for all APIs exposed by this service
-class UserService extends NestedOpenedApi {
+class UserService extends NestedOpenApi {
   // ...
 
   @RestOperation.patch

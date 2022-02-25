@@ -7,7 +7,7 @@ import 'open_api_route.dart';
 import 'open_api_service.dart';
 import 'opened_api.dart';
 
-class SwaggerApi extends OpenedApi {
+class SwaggerApi extends OpenApi {
   SwaggerApi(this._parent, this._openApiService, [this._swaggerUiDir]);
 
   final NestedRoute _parent;

@@ -7,6 +7,7 @@ class RestField {
   const RestField(
       {this.title,
       this.tags,
+      this.type,
       this.format,
       this.mimeType,
       this.nullable,
@@ -20,6 +21,7 @@ class RestField {
         required = null,
         tags = null,
         title = null,
+        type = null,
         ignored = true;
 
   /// Annotation to exclude a field from a REST entity.
@@ -33,6 +35,9 @@ class RestField {
 
   /// Tags associated with the field.
   final List<String>? tags;
+
+  /// The field value type.
+  final Type? type;
 
   /// How the field value's should be formatted.
   final String? format;

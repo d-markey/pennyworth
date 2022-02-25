@@ -114,6 +114,9 @@ class SpecMapper {
         case double:
           prop = Property.number(p.name);
           break;
+        case DateTime:
+          prop = Property.dateTime(p.name);
+          break;
         case String:
           prop = Property.string(p.name);
           break;
@@ -134,6 +137,7 @@ class SpecMapper {
           break;
       }
       if (p.title != null) prop.title = p.title!;
+      if (p.format != null) prop.format = p.format!;
       if (p.nullable != null) prop.nullable = p.nullable!;
       if (p.deprecated != null) prop.deprecated = p.deprecated!;
       schema.addProperty(prop);

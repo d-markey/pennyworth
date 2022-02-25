@@ -63,6 +63,15 @@ class PropertySpecification extends TypeSpecification {
             nullable: nullable,
             deprecated: deprecated);
 
+  /// Constructor for date-time property specification.
+  PropertySpecification.dateTime(this.name,
+      {String? title, bool? nullable, bool? deprecated, this.required = false})
+      : super.string(
+            title: title,
+            format: 'date-time',
+            nullable: nullable,
+            deprecated: deprecated);
+
   /// Constructor for custom type property specification.
   PropertySpecification.object(this.name,
       {String? title,

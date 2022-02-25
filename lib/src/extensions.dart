@@ -34,7 +34,7 @@ extension NullableExt<T> on Iterable<T> {
   }
 }
 
-extension ForcedHeaders on HttpRequest {
+extension HttpRequestExt on HttpRequest {
   static const _key = r'$forced_headers';
 
   void forceHeader(String name, String value) {
@@ -46,4 +46,24 @@ extension ForcedHeaders on HttpRequest {
     final forcedHeaders = store.get(_key);
     return forcedHeaders?[name];
   }
+
+  Future<String> getString() async => ((await body) ?? '') as String;
+
+  Future<double> getDouble() async => double.parse(await getString());
+
+  Future<int> getInt() async => int.parse(await getString());
+
+  Future<bool> getBool() async {
+    final value = await getString();
+    switch (value) {
+      case 'true':
+        return true;
+      case 'false':
+        return false;
+      default:
+        throw FormatException('Invalid boolean value');
+    }
+  }
+
+  Future<DateTime> getDateTime() async => DateTime.parse(await getString());
 }

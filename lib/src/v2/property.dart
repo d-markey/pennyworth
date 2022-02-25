@@ -72,6 +72,22 @@ class Property extends Schema {
             example: example,
             externalDocs: externalDocs);
 
+  Property.dateTime(this.name,
+      {dynamic defaultValue,
+      String? title,
+      bool? nullable,
+      bool? deprecated,
+      String? example,
+      ExternalDocs? externalDocs})
+      : super.string(
+            format: 'date-time',
+            defaultValue: defaultValue,
+            title: title,
+            nullable: nullable,
+            deprecated: deprecated,
+            example: example,
+            externalDocs: externalDocs);
+
   Property.boolean(this.name,
       {String? format,
       dynamic defaultValue,
