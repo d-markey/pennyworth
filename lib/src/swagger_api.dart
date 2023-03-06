@@ -34,7 +34,19 @@ class SwaggerApi extends OpenApi {
     });
 
     if (_swaggerUiDir != null) {
-      _parent.get('/*', (req, res) => _swaggerUiDir);
+      _parent.get('/*', (req, res) {
+        final dot = req.uri.pathSegments.last.lastIndexOf('.');
+        final ext = (dot >= 0) ? req.uri.pathSegments.last.substring(dot) : '';
+        switch (ext.toLowerCase()) {
+          case '.css':
+            res.headers.contentType = ContentType("text", "css");
+            break;
+          case '.js':
+            res.headers.contentType = ContentType("application", "javascript");
+            break;
+        }
+        return _swaggerUiDir;
+      });
     }
 
     return routes;

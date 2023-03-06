@@ -1,32 +1,50 @@
 import 'serializable.dart';
+import 'serialization_exception.dart';
 
 /// YAML serializer.
 class YamlSerializer {
-  YamlSerializer({String? indent}) : _indent = indent ?? '  ';
+  factory YamlSerializer({required String indent}) =>
+      _cache.putIfAbsent(indent, () => YamlSerializer._(indent));
 
-  final String _indent;
+  static final _cache = <String, YamlSerializer>{};
+
+  YamlSerializer._(this.indent) : dashIndent = '-${indent.substring(1)}';
+
+  final String indent;
+  final String dashIndent;
+
+  String _indent(String line) => '$indent$line';
+  String _dashIndent(String line) => '$dashIndent$line';
 
   /// Serialization of a scalar value.
-  String _serializeScalar(dynamic value) =>
-      (value is bool) ? (value ? 'true' : 'false') : value.toString();
+  String _serializeScalar(dynamic value) {
+    if (value == null) return 'null';
+    if (value is String) return _escape(value);
+    if (value is bool) return value ? 'true' : 'false';
+    if (value is num) return value.toString();
+    throw SerializationException.unsupported(value);
+  }
 
   /// Serialization of a list.
   Iterable<String> _serializeList(List<dynamic> list) sync* {
-    final firstIndent = '-' + _indent.substring(1);
     for (var value in list) {
-      var indent = firstIndent;
+      var indenter = _dashIndent;
       if (isScalar(value)) {
-        yield indent + _serializeScalar(value);
+        yield indenter(_serializeScalar(value));
       } else if (value is Map<String, dynamic>) {
-        for (var line in _serializeMap(value)) {
-          yield indent + line;
-          indent = _indent;
-        }
+        final lines = _serializeMap(value);
+        yield* lines
+            .take(1)
+            .map(_dashIndent)
+            .followedBy(lines.skip(1).map(_indent));
       } else if (value is List) {
-        for (var line in _serializeList(value)) {
-          yield indent + line;
-          indent = _indent;
-        }
+        final lines = _serializeList(value);
+        yield* lines
+            .take(1)
+            .map(_dashIndent)
+            .followedBy(lines.skip(1).map(_indent));
+      } else {
+        throw SerializationException.unsupported(value);
       }
     }
   }
@@ -35,17 +53,15 @@ class YamlSerializer {
   Iterable<String> _serializeMap(Map<String, dynamic> map) sync* {
     for (var entry in map.entries) {
       if (isScalar(entry.value)) {
-        yield '${entry.key}: ' + _serializeScalar(entry.value);
+        yield '${entry.key}: ${_serializeScalar(entry.value)}';
       } else if (entry.value is Map) {
         yield '${entry.key}:';
-        for (var line in _serializeMap(entry.value)) {
-          yield '$_indent$line';
-        }
+        yield* _serializeMap(entry.value).map(_indent);
       } else if (entry.value is List) {
         yield '${entry.key}:';
-        for (var line in _serializeList(entry.value)) {
-          yield '$_indent$line';
-        }
+        yield* _serializeList(entry.value).map(_indent);
+      } else {
+        throw SerializationException.unsupported(entry.value);
       }
     }
   }
@@ -55,16 +71,29 @@ class YamlSerializer {
     if (isScalar(data)) {
       yield _serializeScalar(data);
     } else if (data is Map<String, dynamic>) {
-      for (var line in _serializeMap(data)) {
-        yield line;
-      }
+      yield* _serializeMap(data);
     } else if (data is List) {
-      for (var line in _serializeList(data)) {
-        yield line;
-      }
+      yield* _serializeList(data);
+    } else {
+      throw SerializationException.unsupported(data);
     }
   }
 
   /// Serialization implementation.
   String serialize(Map<String, dynamic> map) => _serialize(map).join('\n');
+
+  static final _escDoubleQuote = RegExp('["\\\\]');
+  static final _escSingleQuote = RegExp('[#\']');
+
+  static String _escape(String data) {
+    if (_escDoubleQuote.hasMatch(data)) {
+      return '"${data.replaceAll('\\', '\\\\').replaceAll('"', '\\"')}"';
+    } else if (_escSingleQuote.hasMatch(data)) {
+      return '\'${data.replaceAll('\'', '\'\'')}\'';
+    } else if (data.startsWith('-')) {
+      return '\'$data\'';
+    } else {
+      return data;
+    }
+  }
 }

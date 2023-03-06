@@ -1,15 +1,13 @@
 import 'package:test/test.dart';
 
-void main() {
-  group('Swagger (Open Api v2) tests', () {
-    test('TODO', () {
-      expect(true, isTrue);
-    });
-  });
+import 'serialization_test_suite.dart' as serialization_tests;
 
-  group('Open Api v3 tests', () {
-    test('TODO', () {
-      expect(true, isTrue);
-    });
+void main() {
+  group('Swagger (Open Api v2) tests', () {});
+
+  group('Open Api v3 tests', () {});
+
+  group('Serializers', () {
+    serialization_tests.run();
   });
 }

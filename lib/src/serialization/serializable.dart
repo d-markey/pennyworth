@@ -4,62 +4,16 @@ import 'yaml_serializer.dart';
 
 enum Mode { json, yaml }
 
+/// Returns true if [value] is natively serializable (ie [value] is a [String], a [num]
+/// or a [bool]).
 bool isScalar(dynamic value) =>
-    value is String ||
-    value is int ||
-    value is double ||
-    value is num ||
-    value is bool;
-
-bool isSerializable(dynamic value) {
-  if (value == null) return false;
-  if (isScalar(value)) return true;
-  if (value is Serializable) return true;
-  if (value is Iterable<dynamic>) return true;
-  if (value is Map<String, dynamic>) return true;
-  return false;
-}
-
-String _serializeScalar(dynamic value, Mode mode) {
-  if (value is String) {
-    if (mode == Mode.yaml && value.contains('#')) {
-      return '\'' + value.replaceAll('\'', '\\\'') + '\'';
-    } else {
-      return value;
-    }
-  } else if (value is bool) {
-    return value ? 'true' : 'false';
-  } else {
-    return value.toString();
-  }
-}
-
-dynamic _serialize(dynamic value, Mode mode) {
-  if (isScalar(value)) return _serializeScalar(value, mode);
-  if (value is Serializable) return value.serialize(mode);
-  if (value is Iterable<dynamic>) return value.serialize(mode);
-  if (value is Map<String, dynamic>) return value.serialize(mode);
-  throw SerializationException(value);
-}
-
-extension _ListSerialization on Iterable<dynamic> {
-  Iterable whereSerializable() => where((e) => isSerializable(e));
-  List serialize(Mode mode) =>
-      List.from(whereSerializable().map((e) => _serialize(e, mode)));
-}
-
-extension _MapSerialization on Map<String, dynamic> {
-  Iterable<MapEntry<String, dynamic>> whereSerializable() =>
-      entries.where((e) => isSerializable(e.value));
-  Map<String, dynamic> serialize(Mode mode) =>
-      Map<String, dynamic>.fromEntries(whereSerializable().map(
-          (p) => MapEntry<String, dynamic>(p.key, _serialize(p.value, mode))));
-}
+    value == null || value is String || value is num || value is bool;
 
 /// Base class for serializable data structures.
 abstract class Serializable {
   final _map = <String, dynamic>{};
 
+  /// Sets [property] field with [value].
   void setProp(String property, dynamic value) {
     if (value == null) {
       _map.remove(property);
@@ -68,13 +22,14 @@ abstract class Serializable {
     }
   }
 
+  /// Adds [value] to the [property] list.
   void addToList<T>(String property, T value) {
     if (value != null) {
-      final list = _map.putIfAbsent(property, () => <T>[]);
-      list.add(value);
+      _map.putIfAbsent(property, () => <T>[]).add(value);
     }
   }
 
+  /// Sets entry [key] with [value] in the [property] map.
   void addToMap<T>(String property, String key, T value) {
     final map = _map.putIfAbsent(property, () => <String, T>{});
     if (value == null) {
@@ -84,15 +39,47 @@ abstract class Serializable {
     }
   }
 
+  /// Returns the value of [property].
   dynamic getProp(String property) => _map[property];
-
-  Map<String, dynamic> serialize(Mode mode) => _serialize(_map, mode);
 
   /// JSON serialization
   String toJson() =>
-      JsonSerializer(indent: '   ').serialize(serialize(Mode.json));
+      JsonSerializer(indent: '   ').serialize(_serialize(Mode.json));
 
   /// YAML serialization
   String toYaml() =>
-      YamlSerializer(indent: '  ').serialize(serialize(Mode.yaml));
+      YamlSerializer(indent: '  ').serialize(_serialize(Mode.yaml));
+
+  Map<String, dynamic> _serialize(Mode mode) => __serialize(_map, mode);
+}
+
+dynamic __serialize(dynamic value, Mode mode) {
+  if (isScalar(value)) return value;
+  if (value is Serializable) return value._serialize(mode);
+  if (value is Iterable<dynamic>) return value._serialize(mode);
+  if (value is Map<String, dynamic>) return value._serialize(mode);
+  throw SerializationException.unsupported(value);
+}
+
+bool __isSerializable(dynamic value) => (value is MapEntry<String, dynamic>)
+    ? __isSerializable(value.value)
+    : ((value is Map<String, dynamic>) ||
+        (value is Iterable<dynamic>) ||
+        (value is Serializable) ||
+        isScalar(value));
+
+extension _ListSerialization on Iterable {
+  Iterable _whereSerializable() => where(__isSerializable);
+
+  List _serialize(Mode mode) =>
+      List.from(_whereSerializable().map((e) => __serialize(e, mode)));
+}
+
+extension _MapSerialization on Map<String, dynamic> {
+  Iterable<MapEntry<String, dynamic>> _whereSerializable() =>
+      entries.where(__isSerializable);
+
+  Map<String, dynamic> _serialize(Mode mode) =>
+      Map.fromEntries(_whereSerializable()
+          .map((p) => MapEntry(p.key, __serialize(p.value, mode))));
 }

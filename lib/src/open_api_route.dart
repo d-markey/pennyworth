@@ -3,7 +3,8 @@ import 'package:alfred/alfred.dart';
 import 'open_api_service.dart';
 
 /// Wrapper around Alfred's [HttpRoute].
-/// The route contains additional information used by the [OpenApiService] to generate OpenAPI specifications useable with Swagger UI.
+/// The route contains additional information used by the [OpenApiService] to generate OpenAPI
+/// specifications useable with Swagger UI.
 class OpenApiRoute {
   OpenApiRoute(this.route,
       {this.input,

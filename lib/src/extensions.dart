@@ -23,14 +23,14 @@ extension NullableExt<T> on Iterable<T> {
     if (isEmpty) return null;
     return (predicate == null)
         ? first
-        : cast<T?>().firstWhere((e) => predicate(e!), orElse: _null);
+        : cast<T?>().firstWhere((e) => predicate(e as T), orElse: _null);
   }
 
   T? singleOrNull([bool Function(T)? predicate]) {
     if (isEmpty) return null;
     return (predicate == null)
         ? single
-        : cast<T?>().singleWhere((e) => predicate(e!), orElse: _null);
+        : cast<T?>().singleWhere((e) => predicate(e as T), orElse: _null);
   }
 }
 

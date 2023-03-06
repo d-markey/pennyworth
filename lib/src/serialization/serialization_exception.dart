@@ -1,7 +1,9 @@
 class SerializationException implements Exception {
-  SerializationException(this.value)
-      : message = 'Value \'$value\' is not serializable';
+  SerializationException(this.message, [this.cause]);
 
-  final dynamic value;
+  SerializationException.unsupported(dynamic data, [dynamic cause])
+      : this('Unsupported type ${data.runtimeType}', cause);
+
   final dynamic message;
+  final dynamic cause;
 }

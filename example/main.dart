@@ -24,7 +24,7 @@ void startServer() async {
     MathApi(app.route('/math')),
     HelloApi(app.route('/hello')),
     SwaggerApi(app.route('/dev/open-api'), openApiService,
-        Directory('assets/swagger-ui-4.1.2/')),
+        Directory('assets/swagger-ui-4.17.0/')),
   ]);
 
   final server = await app.listen(8080);
